@@ -1,14 +1,17 @@
 package config
 
 import (
+	"assesment/entity"
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var (
+	err    = godotenv.Load()
 	dbUser = os.Getenv("DB_USER")
 	dbPass = os.Getenv("DB_PASSWORD")
 	dbHost = os.Getenv("DB_HOST")
@@ -22,6 +25,9 @@ func Connection() *gorm.DB {
 	if err != nil {
 		panic("failed to create a connection to database")
 	}
+
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Pass{})
 
 	return db
 }
