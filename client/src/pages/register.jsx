@@ -18,6 +18,8 @@ const handleSubmit = (e) => {
         password: password,
 
     };
+console.log(data);
+
 }
 
 
