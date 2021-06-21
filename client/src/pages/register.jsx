@@ -25,7 +25,7 @@ const dispatch = useDispatch()
     };
 console.log(data);
 
-dispatch(registerAPI)
+dispatch(registerAPI(data))
 
 }
 
