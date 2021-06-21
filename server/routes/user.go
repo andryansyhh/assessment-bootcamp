@@ -19,11 +19,11 @@ var (
 )
 
 func UserRouter(r *gin.Engine) {
-	r.GET("/users")
-	r.GET("users/:user_id")
-	r.POST("users/register")
-	r.POST("users/login")
-	r.PUT("users/:user_id")
-	r.DELETE("users/:user_id")
+	r.GET("/users", handler.Middleware(userService, authService), userHandler.GetUserByID)
+	r.GET("users/:user_id", handler.Middleware(userService, authService), userHandler.GetUserByID)
+	r.POST("users/register", userHandler.UserRegister)
+	r.POST("users/login", userHandler.UserLogin)
+	r.PUT("users/:user_id", userHandler.UpdateUser)
+	r.DELETE("users/:user_id", userHandler.DeleteUser)
 
 }
