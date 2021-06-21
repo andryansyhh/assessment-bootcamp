@@ -3,6 +3,7 @@ package user
 import (
 	"assesment/entity"
 	"errors"
+	"fmt"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -12,7 +13,7 @@ type Service interface {
 	GetAllUser() ([]UserFormatter, error)
 	GetUserByID(userID string) (UserFormatter, error)
 	UserRegister(input entity.UserRegister) (UserFormatter, error)
-	UserLogin(input entity.UserLogin) (UserLoginFormatter, error)
+	UserLogin(input entity.UserLogin) (entity.User, error)
 	UpdateUser(userID string, input entity.UpdateUser) (UserFormatter, error)
 	DeleteUser(userID string) (string, error)
 }
@@ -91,16 +92,48 @@ func (s *service) UserLogin(input entity.UserLogin) (UserLoginFormatter, error) 
 
 	err = bcrypt.CompareHashAndPassword([]byte(checkUser.Password), []byte(input.Password))
 
-	formatter := UserLoginFormatter(checkUser)
+	if err != nil {
+		return UserLoginFormatter{}, errors.New("user email / password invalid")
+	}
+
+	formatter := UserLoginFormat(checkUser)
 
 	return formatter, nil
 
 }
 
 func (s *service) UpdateUser(userID string, input entity.UpdateUser) (UserFormatter, error) {
+	var dataUpdate = map[string]interface{}{}
 
+	if input.Fullname != "" || len(input.Fullname) != 0 {
+		dataUpdate["fullname"] = input.Fullname
+	}
+
+	if input.Address != "" || len(input.Address) != 0 {
+		dataUpdate["address"] = input.Address
+	}
+
+	dataUpdate["updated_at"] = time.Now()
+
+	userUpdate, err := s.repository.Update(userID, dataUpdate)
+
+	if err != nil {
+		return UserFormatter{}, err
+	}
+
+	formatUser := UserFormat(userUpdate)
+
+	return formatUser, nil
 }
 
 func (s *service) DeleteUser(userID string) (string, error) {
+	msg, err := s.repository.Delete(userID)
 
+	if err != nil {
+		return msg, err
+	}
+
+	message := fmt.Sprintf("user id %s success deleted", userID)
+
+	return message, nil
 }

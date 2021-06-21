@@ -28,7 +28,7 @@ func UserFormat(user entity.User) UserFormatter {
 	}
 }
 
-func UserLoginFomat(user entity.User) UserLoginFormatter {
+func UserLoginFormat(user entity.User) UserLoginFormatter {
 	return UserLoginFormatter{
 		ID:       user.ID,
 		Fullname: user.Fullname,
