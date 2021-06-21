@@ -28,12 +28,12 @@ func UserFormat(user entity.User) UserFormatter {
 	}
 }
 
-func UserLoginFormat(user entity.User) UserLoginFormatter {
+func UserLoginFormat(user entity.User, token string) UserLoginFormatter {
 	return UserLoginFormatter{
-		ID:       user.ID,
-		Fullname: user.Fullname,
-		Email:    user.Email,
-		Address:  user.Address,
-		// Authorization: user.Address,
+		ID:            user.ID,
+		Fullname:      user.Fullname,
+		Email:         user.Email,
+		Address:       user.Address,
+		Authorization: token,
 	}
 }

@@ -1,6 +1,7 @@
 package user
 
 import (
+	"assesment/auth"
 	"assesment/entity"
 	"errors"
 	"fmt"
@@ -13,17 +14,18 @@ type Service interface {
 	GetAllUser() ([]UserFormatter, error)
 	GetUserByID(userID string) (UserFormatter, error)
 	UserRegister(input entity.UserRegister) (UserFormatter, error)
-	UserLogin(input entity.UserLogin) (entity.User, error)
+	UserLogin(input entity.UserLogin) (UserLoginFormatter, error)
 	UpdateUser(userID string, input entity.UpdateUser) (UserFormatter, error)
 	DeleteUser(userID string) (string, error)
 }
 
 type service struct {
-	repository Repository
+	repository  Repository
+	authService auth.Service
 }
 
-func NewUserService(repository Repository) *service {
-	return &service{repository}
+func NewUserService(repository Repository, authService auth.Service) *service {
+	return &service{repository, authService}
 }
 
 func (s *service) GetAllUser() ([]UserFormatter, error) {
@@ -96,7 +98,9 @@ func (s *service) UserLogin(input entity.UserLogin) (UserLoginFormatter, error) 
 		return UserLoginFormatter{}, errors.New("user email / password invalid")
 	}
 
-	formatter := UserLoginFormat(checkUser)
+	token, _ := s.authService.GenerateToken(checkUser.ID)
+
+	formatter := UserLoginFormat(checkUser, token)
 
 	return formatter, nil
 
