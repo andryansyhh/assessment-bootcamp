@@ -9,7 +9,7 @@ import (
 type Repository interface {
 	GetAllUser() ([]entity.User, error)
 	FindByID(ID string) (entity.User, error)
-	FindbyEmail(email string) (entity.User, error)
+	FindByEmail(email string) (entity.User, error)
 	Create(user entity.User) (entity.User, error)
 	Update(ID string, dataUpdate map[string]interface{}) (entity.User, error)
 	Delete(ID string) (string, error)
@@ -43,7 +43,7 @@ func (r *repository) FindByID(ID string) (entity.User, error) {
 	return user, nil
 }
 
-func (r *repository) FindbyEmail(email string) (entity.User, error) {
+func (r *repository) FindByEmail(email string) (entity.User, error) {
 	var user entity.User
 
 	if err := r.db.Where("email = ?", email).Find(&user).Error; err != nil {

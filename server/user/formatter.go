@@ -4,14 +4,14 @@ import (
 	"assesment/entity"
 )
 
-type Formatter struct {
+type UserFormatter struct {
 	ID       int    `gorm:"primaryKey" json:"id"`
 	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Address  string `json:"address"`
 }
 
-type LoginFormatter struct {
+type UserLoginFormatter struct {
 	ID            int    `gorm:"primaryKey" json:"id"`
 	Fullname      string `json:"fullname"`
 	Email         string `json:"email"`
@@ -19,8 +19,8 @@ type LoginFormatter struct {
 	Authorization string `json:"authorization"`
 }
 
-func UserFormat(user entity.User) Formatter {
-	return Formatter{
+func UserFormat(user entity.User) UserFormatter {
+	return UserFormatter{
 		ID:       user.ID,
 		Fullname: user.Fullname,
 		Email:    user.Email,
@@ -28,12 +28,12 @@ func UserFormat(user entity.User) Formatter {
 	}
 }
 
-func UserLoginFomat(user entity.User) LoginFormatter {
-	return LoginFormatter{
-		ID:            user.ID,
-		Fullname:      user.Fullname,
-		Email:         user.Email,
-		Address:       user.Address,
-		Authorization: user.Address,
+func UserLoginFomat(user entity.User) UserLoginFormatter {
+	return UserLoginFormatter{
+		ID:       user.ID,
+		Fullname: user.Fullname,
+		Email:    user.Email,
+		Address:  user.Address,
+		// Authorization: user.Address,
 	}
 }
