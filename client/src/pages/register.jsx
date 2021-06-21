@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { Form, Button } from "react-bootstrap";
+import {useDispatch} from 'react-redux'
+import {registerAPI }from "../redux/action/authAction"
 
 function Register() {
 
@@ -8,7 +10,10 @@ function Register() {
  const [email, setEmail] = useState("")
  const [password, setPassword] = useState("")
 
-const handleSubmit = (e) => {
+
+const dispatch = useDispatch()
+
+ const handleSubmit = (e) => {
     e.preventDefault()
 
     const data = {
@@ -20,10 +25,10 @@ const handleSubmit = (e) => {
     };
 console.log(data);
 
+dispatch(registerAPI)
+
 }
 
-
-    
   return (
     <div>
       <Form onSubmit={handleSubmit}>

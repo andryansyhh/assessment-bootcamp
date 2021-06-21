@@ -3,7 +3,7 @@ import {REGISTER_SUCCESS, REGISTER_FAIL} from '../action/actionType'
 const user =JSON.parse(localStorage.getItem("user"))
 
 const initialState = 
-user?{
+user ? {
     isLogin :true, user
 }:
 {
